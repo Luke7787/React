@@ -76,10 +76,11 @@ const findUsers = (name, job) => {
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.status(201).end();
+    res.status(200).end();
 });
 
-function addUser(user){
+function addUser(user) {
+    user.id = generateRandomId(); // Assign a unique ID to the user
     users['users_list'].push(user);
 }
 
@@ -98,6 +99,18 @@ function deleteUserById(id) {
     const initialLength = users['users_list'].length;
     users['users_list'] = users['users_list'].filter(user => user.id !== id);
     return users['users_list'].length !== initialLength;
+}
+
+function generateRandomId() {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let randomId = '';
+    for (let i = 0; i < 3; i++) { 
+        randomId += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    for (let i = 0; i < 3; i++) {
+        randomId += Math.floor(Math.random() * 10).toString();
+    }
+    return randomId;
 }
 
 app.listen(port, () => {
