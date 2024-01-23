@@ -76,7 +76,7 @@ const findUsers = (name, job) => {
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.status(200).end();
+    res.status(201).end(); // Correctly returning 201 status code
 });
 
 function addUser(user) {
