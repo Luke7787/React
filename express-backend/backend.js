@@ -80,8 +80,14 @@ app.post('/users', (req, res) => {
 });
 
 function addUser(user) {
-    user.id = generateRandomId(); // Assign a unique ID to the user
-    users['users_list'].push(user);
+    const userId = generateRandomId(); // Generate the new ID
+    // Create a new user object with properties in the desired order
+    const newUser = {
+        id: userId,
+        name: user.name,
+        job: user.job
+    };
+    users['users_list'].push(newUser); // Add the new user to the users_list
 }
 
 // DELETE a user by id
