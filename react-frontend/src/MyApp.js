@@ -8,10 +8,20 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
+    const character = characters[index];
+    
+    axios.delete(`http://localhost:8000/users/${character.id}`)
+        .then(response => {
+            if (response.status === 204) {
+                // Remove the character from the state if the backend deletion was successful
+                const updated = characters.filter((c, i) => i !== index);
+                setCharacters(updated);
+            }
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            // Optionally handle the error by showing an error message to the user
+        });
   }
 
   function updateList(person) { 
