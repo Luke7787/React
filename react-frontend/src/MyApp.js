@@ -9,27 +9,26 @@ function MyApp() {
 
   function removeOneCharacter(index) {
     const character = characters[index];
-    
-    axios.delete(`http://localhost:8000/users/${character.id}`)
+
+    axios.delete(`http://localhost:8000/users/${character._id}`)  // Use _id here
         .then(response => {
             if (response.status === 204) {
-                // Remove the character from the state if the backend deletion was successful
                 const updated = characters.filter((c, i) => i !== index);
                 setCharacters(updated);
             }
         })
         .catch(error => {
             console.error('There was an error!', error);
-            // Optionally handle the error by showing an error message to the user
         });
-  }
+   }
 
-  function updateList(person) { 
-   makePostCall(person).then( result => {
-   if (result && result.status === 201) // Changed from 200 to 201
-      setCharacters([...characters, person] );
-   });
-  }
+  function updateList(person) {
+    makePostCall(person).then(result => {
+        if (result && result.status === 201) {
+            setCharacters([...characters, result.data]);  // Use the data from the backend
+        }
+    });
+   }
 
   async function fetchAll(){
    try {
@@ -44,14 +43,14 @@ function MyApp() {
   }
 
   async function makePostCall(person){
-   try {
-      const response = await axios.post('http://localhost:8000/users', person);
-      return response;
-   }
-   catch (error) {
-      console.log(error);
-      return false;
-   }
+    try {
+        const response = await axios.post('http://localhost:8000/users', person);
+        return response;
+    }
+    catch (error) {
+        console.log(error);
+        return false;
+    }
   }
 
   useEffect(() => {
