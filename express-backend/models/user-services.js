@@ -1,3 +1,4 @@
+// user-services.js
 const mongoose = require('mongoose');
 const UserSchema = require("./user");
 
@@ -12,6 +13,11 @@ function getDbConnection() {
     }
     return dbConnection;
   }
+
+async function getAllUsers() {
+    const userModel = getDbConnection().model("User", UserSchema);
+    return await userModel.find({});
+}
 
 async function getUsers(name, job){
     const userModel = getDbConnection().model("User", UserSchema);
@@ -63,6 +69,22 @@ async function findUserByJob(job){
     return await userModel.find({'job':job});
 }
 
-exports.getUsers = getUsers;
-exports.findUserById = findUserById;
-exports.addUser = addUser;
+async function getUsersByNameAndJob(name, job) {
+    const userModel = getDbConnection().model("User", UserSchema);
+    return await userModel.find({ name: name, job: job });
+}
+
+async function deleteUserById(id) {
+    const userModel = getDbConnection().model("User", UserSchema);
+    return await userModel.findByIdAndDelete(id);
+}
+
+module.exports = {
+    getUsers,
+    findUserById,
+    addUser,
+    getUsersByNameAndJob,
+    getAllUsers,
+    deleteUserById
+};
+
